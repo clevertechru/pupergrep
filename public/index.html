@@ -13,6 +13,12 @@
                 padding-top: 60px;
                 padding-bottom: 40px;
             }
+
+			.container-fluid {
+				padding-right: 15px;
+				padding-left: 15px;
+			}
+
             .sidebar-nav {
                 padding: 9px 0;
             }
@@ -72,6 +78,13 @@
             }
         </style>
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+		<style type="text/css">
+			.table th, .table td { padding: 2px 8px}
+			.well {
+				margin-bottom: 15px;
+			}
+		</style>
     </head>
 
     <body>
@@ -90,12 +103,12 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span3">
+                <div class="span2">
                     <div class="well sidebar-nav">
                         <div class="nav-list form-horizontal pupergrep-settings-form">
                             <h3>Settings<i class="icon-ban-circle" id="health-icon"></i></h3>
                             <div class="control-group">
-                                <input type="text" id="buffer-length" value="20" />
+                                <input type="text" id="buffer-length" value="2000" />
                                 <span class="help-inline right-settings-help">buffer lines</span>
                             </div>
                             <div class="control-group">
@@ -137,7 +150,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="span9">
+                <div class="span10">
                     <table class="table table-bordered table-striped" id="log-lines">
                         <tbody>
                         </tbody>
@@ -185,7 +198,7 @@
                     healthIconTimer   = undefined,
                     currentLog        = undefined,
                     currentLogType    = undefined,
-                    bufferLength      = 20,
+                    bufferLength      = 2000,
                     outputPaused      = false,
                     mouseDowned       = false,
                     linkSeparator     = '!!!';
@@ -285,7 +298,7 @@
                     var $target = jQuery(e.target);
                     $target.data('tags', data);
                     rebuildCurrentLink();
-                    
+
                     // Apply highlighting to existing log lines
                     $('.log-line').each(function(i, line) {
                         var $line = jQuery(line);
@@ -524,12 +537,12 @@
                     container.addClass("log-line");
                     container.append(line);
 
-                    logLinesTable.append(container);
+                    logLinesTable.prepend(container);
 
                     while (true) {
                         lines = logLinesTable.find("tr.log-line");
                         if (lines.length > bufferLength) {
-                            lines.first().remove();
+                            lines.last().remove();
                         } else {
                             break;
                         }
